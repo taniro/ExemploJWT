@@ -22,6 +22,8 @@ import ufrn.br.exemplojwt.service.UsuarioService;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+    //teste
+
     @Autowired
     private UsuarioService usuarioService;
     @Autowired
