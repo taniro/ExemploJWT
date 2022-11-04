@@ -19,25 +19,20 @@ public class ExemploJwtApplication {
 
     @Autowired
     private UsuarioRepository repository;
-    //@Autowired
-    //private PasswordEncoder encoder;
-
 
     @PostConstruct
     public void initUsers() {
 
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
         List<Usuario> users = Stream.of(
-                new Usuario(1L, "Manoel","manoel@gmail.com", "admin", encoder().encode("admin"), "ROLE_ADMIN"),
-                new Usuario(2L, "João","joao@gmail.com", "user1", encoder().encode("user1"), "ROLE_USER"),
-                new Usuario(3L, "Maria","maria@gmail.com", "user2", encoder().encode("user2"), "ROLE_USER")
+                new Usuario(1L, "Manoel","manoel@gmail.com", "admin", encoder.encode("admin"), "ROLE_ADMIN"),
+                new Usuario(2L, "João","joao@gmail.com", "user1", encoder.encode("user1"), "ROLE_USER"),
+                new Usuario(3L, "Maria","maria@gmail.com", "user2", encoder.encode("user2"), "ROLE_USER")
         ).collect(Collectors.toList());
 
         repository.saveAll(users);
 
-    }
-
-    public PasswordEncoder encoder() {
-        return new BCryptPasswordEncoder();
     }
 
     public static void main(String[] args) {
