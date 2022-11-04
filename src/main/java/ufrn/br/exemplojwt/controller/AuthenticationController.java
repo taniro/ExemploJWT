@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,11 +32,14 @@ public class AuthenticationController {
 
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword());
 
-        Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+        try{
+            Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+            String token = tokenService.generateToken(authentication);
+            return ResponseEntity.ok(new TokenDTO("Bearer", token));
 
-        String token = tokenService.generateToken(authentication);
-
-        return ResponseEntity.ok(new TokenDTO("Bearer", token));
+        } catch (Exception e){
+            throw new UsernameNotFoundException("Username not found") ;
+        }
     }
 
 }
